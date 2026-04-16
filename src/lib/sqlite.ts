@@ -7,7 +7,9 @@ declare global {
 }
 
 function ensureDataDir() {
-  const dataDir = path.join(process.cwd(), "data");
+  // Vercel serverless filesystem is read-only except /tmp.
+  const baseDir = process.env.VERCEL ? "/tmp" : process.cwd();
+  const dataDir = path.join(baseDir, "data");
   fs.mkdirSync(dataDir, { recursive: true });
   return dataDir;
 }
